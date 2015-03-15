@@ -96,40 +96,52 @@ def findinf(map):
 	fcontent = []
 	while (x, y) != (1, 640):
 		print (x, y)
-		if x < 640 and (x+1, y) not in enpath and (map[x+1][y][1],map[x+1][y][2]) == (0, 255): 
+#		print fcontent
+		if x < 640 and (x+1, y) not in enpath and map[x+1][y][2] == 0: 
 			x = x + 1
 			fcontent.append(map[x][y][0])
 			enpath.append((x, y))
-
-		if x>0 and (x-1,y) not in enpath and (map[x-1][y][1],map[x-1][y][2]) == (0, 255):
+		if x > 0 and (x-1, y) not in enpath and map[x-1][y][2] == 0:
 			x = x - 1
 			fcontent.append(map[x][y][0])
 			enpath.append((x, y))
-
-		if y<640 and (x,y+1) not in enpath and (map[x][y+1][1],map[x][y+1][2]) == (0, 255):
+		if y<640 and (x,y+1) not in enpath and map[x][y+1][2] == 0:
 			y = y + 1
 			fcontent.append(map[x][y][0])
 			enpath.append((x, y))
-		if y>0 and (x,y-1) not in enpath and (map[x][y-1][1],map[x][y-1][2]) == (0, 255):
+		if y>0 and (x,y-1) not in enpath and map[x][y-1][2] == 0:
 			y = y - 1
 			fcontent.append(map[x][y][0])
 			enpath.append((x, y))
 	return fcontent
 
 def saveaszip(fcontent):
-	file = open('ambiguity.zip', 'wb')
-	for i in range(len(fcontent)):
-		if fcontent[i] != 0:
-			file.write(fcontent[i])	
-	file.close()
+	f = open('ambiguity.zip', 'wb')
+	for i in fcontent[0::2]:
+#		print i
+		f.write(chr(i))	
+	f.close()
+
+def rewritemap():
+	im = Image.open('maze2.png')	
+	im_rgb = im.convert('RGB')
+	im0 = Image.open('maze.png')
+	im_rgb0 = im0.convert('RGB') 
+	for i in range(im.size[0]):
+		for j in range(im.size[1]):
+			con = im_rgb.getpixel((i, j))
+			if (con[1],con[2])!=(0, 255):
+				im_rgb.putpixel((i,j),(255,255,255))
+			else:
+				im_rgb.putpixel((i,j),im_rgb0.getpixel((i,j)))
+	im_rgb.save('maze3.png')
 
 if __name__ == "__main__":
 	print 'initial'
-#	map = Makemap("maze2.png")
+	map = Makemap("maze3.png")
 	print 'start'
-#	fcontent = findinf(map)	
-	fcontent = [1,2,3]
+#	fcontent = [1,2,3]
+	fcontent = findinf(map)	
+	print 'write'
 	saveaszip(fcontent)
-	
-
-	
+	#rewritemap()
