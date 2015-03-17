@@ -145,3 +145,9 @@ if __name__ == "__main__":
 	print 'write'
 	saveaszip(fcontent)
 	#rewritemap()
+	'''
+	What?
+	This is a programm tha try to find the way out of the riddle.In the riddle,every red digtel is a information about artibory . ZIP header is PK. then write it in ZIP with file,and open it. You will find the answer.
+	How?
+	There are servel functions in the programm.each of them have different function Makemap() is to make png change to the list.I thought it will be quick for my raspberry. steps() is to find the way out the maze black is the way and white is the wall.Saveaspic() is the way to save the result. findinfo() is mean to find the red information for file . And save as ZIP is to write it in ZIP file.
+	'''
