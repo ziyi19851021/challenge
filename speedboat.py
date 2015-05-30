@@ -25,30 +25,26 @@ def download():
 
 def diff():
 	im = Image.open('./zigzag.gif')
-	im_rgb = im.convert('RGB')	
-	im_l = im.convert('L')
-	im_p = im.convert('P')
-	
-	list1 = []
-	list2 = []
+	im_new = Image.new('RGB', (im.size[0], im.size[1]),(0,0,0)) 
+	im_p = im.convert('P', palette=Image.WEB) 
+	list1 = im.tostring() 
+	list2 = im_p.getpalette()
+	list3 = im.palette.getdata()[1][2]
+	'''
+	#print list1[20]
+	#print list2[2]
+	#print dir(im_p.__class__)
+	#print ord(list3)
+
 	for i in range(im.size[0]):
 		for j in range(im.size[1]):
-			list1.append(im.getpixel((i, j)))
-			list2.append(im_l.getpixel((i, j)))
-	d = difflib.Differ()
-	diff = d.compare(list1,list2)
-	for x in diff:
-		print x
+			x = im.getpixel((i, j)) * 3
+			im_new.putpixel((i, j), (list2[x], list2[x+1], list2[x+2]))
+	im_new.save('zigzag_palette.bmp')
+	'''
+	print list(im.palette.getdata()[1][::3])
 
 if __name__ == '__main__':
 	#download()
-	#diff()
-	im = Image.open('./zigzag.gif')
-	im_p = im.convert('P', palette=Image.WEB)
-	list1 = im.tostring()
-	list2 = im_p.getpalette()
-	list3 = im_p.palette.getdata()[1][::3]
-	print list1[20]
-	print list2[2]
-	print dir(im_p.__class__)
-	print list3
+	diff()
+	
